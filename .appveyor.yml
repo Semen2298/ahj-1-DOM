@@ -1,0 +1,19 @@
+version: 1.0.{build}
+
+image: Ubuntu
+
+install:
+  - npm install
+
+build_script:
+  - npm run build
+
+artifacts:
+  - path: dist
+    name: build
+
+deploy_script:
+  - npm install -g gh-pages
+  - git config --global user.email "your-email@example.com"
+  - git config --global user.name "your-github-username"
+  - gh-pages -d dist
