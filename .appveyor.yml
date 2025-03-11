@@ -1,0 +1,20 @@
+version: 1.0.{build}
+
+image: Ubuntu
+
+install:
+  - npm install
+
+build_script:
+  - npm run build
+
+artifacts:
+  - path: dist
+    name: build
+
+deploy_script:
+  - npm install -g gh-pages
+  - git config --global user.email "muzalevskyi.sema@mail.ru"
+  - git config --global user.name "Semen2298"
+  - git remote set-url origin https://Semen2298:${GITHUB_TOKEN}@github.com/Semen2298/ahj-1-DOM.git
+  - gh-pages -d dist
