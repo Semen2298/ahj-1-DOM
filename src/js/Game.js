@@ -5,36 +5,38 @@ export default class Game {
     constructor() {
         this.field = new GameField(16);
         this.goblin = new Goblin();
-        this.score = 0; 
-        this.miss = 0; 
+        this.score = 0;
+        this.miss = 0;
         this.interval = null;
+        this.goblinClicked = false;
 
-        const fieldItems = this.field.container.childNodes;
-
-        for (const fieldItem of fieldItems) {
-            fieldItem.addEventListener('click', () => {
-                if (!fieldItem.querySelector('img')) {
-                    this.miss += 1;
-                    this.updateScore();
-                    return;
-                }
+        this.field.container.addEventListener('click', (event) => {
+            if (event.target.closest('img')) {
                 this.score += 1;
+                this.goblinClicked = true;
+                this.goblin.removeGoblin();
                 this.updateScore();
-            });
-        }
+            }
+        });
     }
 
     startGame() {
-        if (this.interval) return; 
+        if (this.interval) return;
 
-        this.updateScore(); 
+        this.updateScore();
 
         this.interval = setInterval(() => {
-            if (this.miss >= 3) { 
-                alert("Ты проиграл, попробуй еще!");
+            if (!this.goblinClicked && this.goblin.currentCell) {
+                this.miss += 1;
+            }
+
+            if (this.miss >= 5) {
+                alert(`Ты проиграл! Попаданий: ${this.score}`);
                 this.stopGame();
                 return;
             }
+
+            this.goblinClicked = false;
 
             let newCell;
             do {
@@ -50,16 +52,12 @@ export default class Game {
         clearInterval(this.interval);
         this.interval = null;
 
-        alert(`Игра окончена! Твой результат: ${this.score} попаданий, ${this.miss} промахов.`);
+        this.goblin.removeGoblin();
+        alert(`Игра окончена! Результат: ${this.score} попаданий.`);
         
         this.score = 0;
         this.miss = 0;
         this.updateScore();
-
-        if (this.goblin.currentCell) {
-            this.goblin.currentCell.innerHTML = ''; // Убираем гоблина из ячейки
-            this.goblin.currentCell = null; // Обнуляем текущую ячейку
-        }
     }
 
     updateScore() {

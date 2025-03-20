@@ -91,15 +91,16 @@ body {
     border: 5px solid white;
     gap: 15px;
 }
+
 .field-item {
     width: 20%;
     height: 20%;
     display: inline-block;
     border: 1px solid white;
+    cursor: pointer;
 }
 .field-item img {
     height: 100%;
-    cursor: pointer;
 }
 
 .btns {

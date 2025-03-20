@@ -1,21 +1,26 @@
-// управляет персонажем (img), его размещением и перемещением.
-
 export default class Goblin {
     constructor() {
         this.img = document.createElement("img");
         this.img.src = './img/goblin.png';
-
         this.currentCell = null;
     }
+
     setPosition(cell) {
-        if (this.currentCell) {
-            this.currentCell.innerHTML = ''; 
+        this.removeGoblin();
+        if (cell) {
+            cell.appendChild(this.img);
+            this.currentCell = cell;
         }
-        if (!cell) return;
-        cell.appendChild(this.img);
-        this.currentCell = cell;
     }
+
+    removeGoblin() {
+        if (this.currentCell) {
+            this.currentCell.innerHTML = '';
+            this.currentCell = null;
+        }
+    }
+
     getCurrentCell() {
-        return this.currentCell
+        return this.currentCell;
     }
 }
